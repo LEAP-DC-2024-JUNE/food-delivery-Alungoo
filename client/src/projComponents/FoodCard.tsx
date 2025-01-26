@@ -20,6 +20,7 @@ type cardPropsType = {
 }
 export function FoodCard({food}:cardPropsType) {
   return (
+  
     <Card className=" object-contain">
       <CardHeader>
       <Image src={Food1} width={365} alt=" food picture"></Image>
@@ -28,9 +29,10 @@ export function FoodCard({food}:cardPropsType) {
       <h1 className=" text-red-600 font-semibold text-[24px]">{food.title}</h1>
       <strong>{food.price}</strong>
       </CardContent>
-      <CardFooter className="">
+      <CardFooter>
       <p>{food.description}</p>
       </CardFooter>
     </Card>
+    
   )
 }
