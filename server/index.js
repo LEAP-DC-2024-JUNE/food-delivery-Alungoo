@@ -1,26 +1,93 @@
 import express from "express";
-import { UserModel } from "./model/model";
-import connectDB from "./connectDB";
+import { connectDB } from "./connectDB.js";
+import { ObjectId } from "mongodb";
 
 const server = express();
 const PORT = 3000;
 connectDB();
-// server.get("/hello", (req, res) => {
-//   res.send("Hello world!");
-// });
 
 server.post("/create-user", async (req, res) => {
+  let db = await connectDB();
   try {
-    const name = "Alungoo";
-    const age = 18;
-    const newUser = await UserModel({ name, age });
-    newUser.save();
-    res.json(newUser);
+    let result = await db.insertOne({
+      firstName: "Billy",
+      lastName: "Alungoo",
+      gender: "F",
+    });
+    console.log(result);
+    res.json({
+      success: true,
+      result,
+    });
   } catch (error) {
-    console.log(error);
+    res.json({
+      success: false,
+      error,
+    });
   }
 });
 
+server.get("/get-all-users", async (req, res) => {
+  let db = await connectDB();
+  try {
+    let result = await db.find().toArray();
+    console.log(result);
+    res.json({
+      success: true,
+      result,
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      success: false,
+      err,
+    });
+  }
+});
+
+server.put("/update", async (req, res) => {
+  let db = await connectDB();
+
+  try {
+    let result = await db.findOneAndUpdate(
+      {
+        _id: new ObjectId("6798fcacc0b5ddd7796843fd"),
+      },
+      {
+        $set: { name: "Tumen", age: 27, phoneNumber: "99681522" },
+      }
+    );
+    res.json({
+      success: true,
+      result,
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      success: false,
+      err,
+    });
+  }
+});
+
+server.delete("/delete", async (req, res) => {
+  let db = await connectDB();
+  try {
+    let result = await db.findOneAndDelete({
+      _id: new ObjectId("6798fcacc0b5ddd7796843fd"),
+    });
+    res.json({
+      success: true,
+      result,
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      success: false,
+      err,
+    });
+  }
+});
 server.listen(PORT, () => {
   console.log(`Server started at PORT: http://localhost:${PORT}`);
 });
