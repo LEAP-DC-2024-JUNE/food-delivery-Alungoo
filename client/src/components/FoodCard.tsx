@@ -17,18 +17,16 @@ type cardPropsType = {
 
 export function FoodCard({ data }: cardPropsType) {
   return (
-    <Card className=" object-contain">
+    <Card className="w-[400px] bg-white rounded-[20px]">
       <CardHeader>
-        <Image src={Food1} width={365} alt=" food picture"></Image>
+        <Image src={Food1} width={370} alt=" food picture"></Image>
       </CardHeader>
-      <CardContent className="flex justify-between">
-        <h1 className=" text-red-600 font-semibold text-[24px]">
-          {data.title}
-        </h1>
+      <CardContent className="flex  justify-between px-5 py-3">
+        <h1 className="text-[#EF4444] text-2xl font-semibold">{data.title}</h1>
         <strong>{data.price}</strong>
       </CardContent>
       <CardFooter>
-        <p>{data.description}</p>
+        <p className="text-sm font-normal">{data.description}</p>
       </CardFooter>
     </Card>
   );

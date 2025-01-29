@@ -1,8 +1,9 @@
 import React from "react";
 import hero2 from "../Images/hero2.png";
 import Image from "next/image";
-import { BadgeOutline } from "@/components/BadgeOutline";
 import { FoodCard } from "@/components/FoodCard";
+import { Carousel1 } from "@/components/Carousel1";
+
 export type FoodType = {
   type: string;
 };
@@ -76,18 +77,23 @@ const Home = () => {
       description:
         "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
     },
+    {
+      title: "Sunshine Stackers ",
+      price: 12.33,
+      description:
+        "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
+    },
   ];
   return (
-    <div className="">
+    <div>
       <Image src={hero2} alt="banner picture" />
-      <div className=" flex gap-3">
-        {FoodCategories.map((category, index) => {
-          return <BadgeOutline category={category} key={index} />;
-        })}
+      <div className=" my-[100px] px-[220px]">
+        <p className=" my-[50px] text-white text-[30px]">Categories</p>
+        <Carousel1 FoodCategories={FoodCategories} />
       </div>
-      <div>
-        <p>Appetizers</p>
-        <div className=" flex grid-cols-3 grid-rows-2">
+      <div className="px-[200px] my-[50px]">
+        <p className=" my-[50px] text-white text-[30px]">Appetizers</p>
+        <div className=" grid grid-cols-3 gap-3">
           {cardDatas.map((data, index) => {
             return <FoodCard data={data} key={index} />;
           })}

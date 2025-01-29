@@ -1,47 +1,40 @@
-import { Badge } from "@/components/ui/badge";
+"use client";
+import * as React from "react";
+import { BadgeOutline } from "./BadgeOutline";
+import { FoodType } from "@/app/page";
+import { ChevronLeft, ChevronRight } from "lucide-react"; // Import icons if you're using lucide-react
 
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+interface CarouselProps {
+  FoodCategories: FoodType[];
+}
 
-export type FoodCategories = {
-  type: string;
-};
-
-type carouselProps = {
-  FoodCategories: FoodCategories;
-};
-export function Carousel1({ FoodCategories }: carouselProps) {
+export function Carousel1({ FoodCategories }: CarouselProps) {
   return (
-    <Carousel
-      orientation="horizontal"
-      opts={{
-        align: "start",
-      }}
-      className="w-full max-w-sm "
-    >
-      <CarouselContent>
-        <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-          <div className="p-1">
-            <Card>
-              <CardContent className="flex  items-center justify-center p-6">
-                <Badge variant="outline" className=" rounded-3xl">
-                  {FoodCategories.type}
-                </Badge>
-              </CardContent>
-            </Card>
+    <div className="relative w-full">
+      <button
+        className="absolute -left-10 top-1/2 -translate-y-1/2 hover:bg-gray-600 text-white rounded-full p-2 z-10"
+        aria-label="Previous"
+      >
+        <ChevronLeft className="h-6 w-6" />
+      </button>
+
+      <div className="flex flex-wrap gap-6 justify-center items-center px-8">
+        {FoodCategories.map((category, index) => (
+          <div
+            key={`category-${index}`}
+            className="transition-all duration-300"
+          >
+            <BadgeOutline category={category} />
           </div>
-        </CarouselItem>
-      </CarouselContent>
-      <div className="flex bg-red-400">
-        <CarouselPrevious />
-        <CarouselNext />
+        ))}
       </div>
-    </Carousel>
+
+      <button
+        className="absolute right-10 top-1/2 -translate-y-1/2 hover:bg-gray-600 text-white rounded-full p-2 z-10"
+        aria-label="Next"
+      >
+        <ChevronRight className="h-6 w-6" />
+      </button>
+    </div>
   );
 }

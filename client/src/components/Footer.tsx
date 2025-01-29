@@ -20,7 +20,7 @@ const Footer = () => {
             ))}
           </div>
         </div>
-        <div className=" min-w-[1264px]">
+        <div className="">
           <div className=" flex gap-[180px] ">
             <div>
               <FooterLogo />
