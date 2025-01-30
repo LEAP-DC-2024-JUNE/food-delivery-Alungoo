@@ -1,25 +1,32 @@
 import express from "express";
 import { connectDB } from "./connectDB.js";
 import { ObjectId } from "mongodb";
+import cors from "cors";
 
 const server = express();
-const PORT = 3000;
+const PORT = 4000;
+server.use(express.json());
+server.use(cors());
 connectDB();
 
 server.post("/create-user", async (req, res) => {
-  let db = await connectDB();
   try {
-    let result = await db.insertOne({
-      firstName: "Billy",
-      lastName: "Alungoo",
-      gender: "F",
-    });
-    console.log(result);
-    res.json({
+    let db = await connectDB();
+    const { username, age, phoneNumber } = req.body;
+    if (!username || !age || !phoneNumber) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing required fields",
+      });
+    }
+    const newUser = { username, age, phoneNumber };
+    const result = await db.insertOne(newUser);
+    return res.status(201).json({
       success: true,
       result,
     });
   } catch (error) {
+    console.error("Error creating user:", error);
     res.json({
       success: false,
       error,
