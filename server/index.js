@@ -5,9 +5,9 @@ import cors from "cors";
 
 const server = express();
 const PORT = 4000;
-server.use(express.json());
 server.use(cors());
-connectDB();
+server.use(express.json());
+// connectDB();
 
 server.post("/create-user", async (req, res) => {
   try {
@@ -52,7 +52,7 @@ server.get("/get-all-users", async (req, res) => {
   }
 });
 
-server.put("/update", async (req, res) => {
+server.put("/update/:id", async (req, res) => {
   let db = await connectDB();
 
   try {

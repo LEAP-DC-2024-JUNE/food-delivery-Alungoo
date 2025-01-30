@@ -20,7 +20,7 @@ const Footer = () => {
             ))}
           </div>
         </div>
-        <div className="">
+      
           <div className=" flex gap-[180px] ">
             <div>
               <FooterLogo />
@@ -57,7 +57,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-        </div>
+        
         <div className=" border-[1px] w-[1264px] border-[#F4F4F566] my-10 "></div>
         <div className=" min-w-[1264px]">
           <div className=" flex flex-row gap-10  text-[#F4F4F566]">

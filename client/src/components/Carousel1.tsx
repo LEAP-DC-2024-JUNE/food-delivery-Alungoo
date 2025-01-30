@@ -18,7 +18,7 @@ export function Carousel1({ FoodCategories }: CarouselProps) {
         <ChevronLeft className="h-6 w-6" />
       </button>
 
-      <div className="flex flex-wrap gap-6 justify-center items-center px-8">
+      <div className="flex flex-wrap gap-3 justify-center items-center">
         {FoodCategories.map((category, index) => (
           <div
             key={`category-${index}`}

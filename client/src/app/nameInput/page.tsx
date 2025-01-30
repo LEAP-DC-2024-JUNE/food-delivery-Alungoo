@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { InClassCard } from "@/components/InClassCard";
+import { UserCard } from "@/components/UserCard";
 
 export type FormData = {
   username: string;
@@ -17,7 +17,7 @@ export type FormData = {
   phoneNumber: string;
 };
 
-export default function InClass() {
+export default function NameInput() {
   const initialData: FormData = {
     username: "",
     age: "",
@@ -37,7 +37,7 @@ export default function InClass() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    await fetch("http://127.0.0.1:3000/create-user", {
+    await fetch("http://127.0.0.1:4000/create-user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -49,10 +49,10 @@ export default function InClass() {
 
   const fetchDatas = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:3000/get-all-users");
+      const res = await fetch("http://127.0.0.1:4000/get-all-users");
       const data = await res.json();
       console.log(data);
-      setAllData(data);
+      setAllData(data.result);
     } catch (err) {
       console.log(err);
     }
@@ -99,13 +99,9 @@ export default function InClass() {
         </form>
       </Card>
 
-      <div className="">
+      <div className=" flex gap-5 flex-wrap p-0">
         {allData.map((data, index) => (
-          <Card key={index} className="bg-white">
-            <CardContent>
-              <InClassCard data={data} />
-            </CardContent>
-          </Card>
+              <UserCard data={data} key={index}/>
         ))}
       </div>
     </div>
