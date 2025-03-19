@@ -12,14 +12,14 @@ server.use(express.json());
 server.post("/create-user", async (req, res) => {
   try {
     let db = await connectDB();
-    const { username, age, phoneNumber } = req.body;
-    if (!username || !age || !phoneNumber) {
+    const { name, age, phoneNumber } = req.body;
+    if (!name || !age || !phoneNumber) {
       return res.status(400).json({
         success: false,
         error: "Missing required fields",
       });
     }
-    const newUser = { username, age, phoneNumber };
+    const newUser = { name, age, phoneNumber };
     const result = await db.insertOne(newUser);
     return res.status(201).json({
       success: true,
@@ -52,16 +52,20 @@ server.get("/get-all-users", async (req, res) => {
   }
 });
 
-server.put("/update/:id", async (req, res) => {
+server.put("/update", async (req, res) => {
   let db = await connectDB();
-
+  const { id, name, age, phoneNumber } = req.body;
   try {
     let result = await db.findOneAndUpdate(
       {
-        _id: new ObjectId("6798fcacc0b5ddd7796843fd"),
+        _id: new ObjectId(id),
       },
       {
-        $set: { name: "Tumen", age: 27, phoneNumber: "99681522" },
+        $set: {
+          name,
+          age,
+          phoneNumber,
+        },
       }
     );
     res.json({

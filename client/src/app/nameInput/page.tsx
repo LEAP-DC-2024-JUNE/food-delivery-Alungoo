@@ -12,16 +12,18 @@ import { Input } from "@/components/ui/input";
 import { UserCard } from "@/components/UserCard";
 
 export type FormData = {
-  username: string;
+  name: string;
   age: string;
   phoneNumber: string;
+  _id: string;
 };
 
 export default function NameInput() {
   const initialData: FormData = {
-    username: "",
+    name: "",
     age: "",
     phoneNumber: "",
+    _id: "",
   };
 
   const [formData, setFormData] = useState<FormData>(initialData);
@@ -37,14 +39,18 @@ export default function NameInput() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    await fetch("http://127.0.0.1:4000/create-user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    setFormData(initialData);
+    try {
+      await fetch("http://127.0.0.1:4000/create-user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      setFormData(initialData);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const fetchDatas = async () => {
@@ -61,8 +67,9 @@ export default function NameInput() {
   useEffect(() => {
     fetchDatas();
   }, []);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-[50px] mt-7">
       <Card className="w-[400px] bg-white rounded-[20px]">
         <CardHeader>
           <CardTitle>Add Contact Information</CardTitle>
@@ -71,10 +78,10 @@ export default function NameInput() {
           <CardContent className="space-y-4">
             <Input
               type="text"
-              placeholder="Username"
-              value={formData.username}
+              placeholder="Name"
+              value={formData.name}
               onChange={handleChange}
-              name="username"
+              name="name"
             />
             <Input
               type="number"
@@ -98,10 +105,10 @@ export default function NameInput() {
           </CardFooter>
         </form>
       </Card>
-
-      <div className=" flex gap-5 flex-wrap p-0">
-        {allData.map((data, index) => (
-              <UserCard data={data} key={index}/>
+      <div className=" underline">Users:</div>
+      <div className=" flex gap-5 flex-wrap my-10 ">
+        {allData?.map((data, index) => (
+          <UserCard data={data} key={index} />
         ))}
       </div>
     </div>
