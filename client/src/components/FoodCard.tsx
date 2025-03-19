@@ -15,7 +15,7 @@ type cardPropsType = {
   data: Appetizers;
 };
 
-export function FoodCard({ data }: cardPropsType) {
+const FoodCard = ({ data }: cardPropsType) => {
   return (
     <Card className="w-[400px] bg-white rounded-[20px]">
       <CardHeader>
@@ -30,4 +30,5 @@ export function FoodCard({ data }: cardPropsType) {
       </CardFooter>
     </Card>
   );
-}
+};
+export default FoodCard;

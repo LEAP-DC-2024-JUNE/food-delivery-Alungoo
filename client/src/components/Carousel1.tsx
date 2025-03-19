@@ -1,14 +1,14 @@
 "use client";
 import * as React from "react";
 import { BadgeOutline } from "./BadgeOutline";
-import { FoodType } from "@/app/page";
+import { FoodType } from "./FoodContainer";
 import { ChevronLeft, ChevronRight } from "lucide-react"; // Import icons if you're using lucide-react
 
 interface CarouselProps {
   FoodCategories: FoodType[];
 }
 
-export function Carousel1({ FoodCategories }: CarouselProps) {
+const Carousel1: React.FC<CarouselProps> = ({ FoodCategories }) => {
   return (
     <div className="relative w-full">
       <button
@@ -37,4 +37,6 @@ export function Carousel1({ FoodCategories }: CarouselProps) {
       </button>
     </div>
   );
-}
+};
+
+export default Carousel1;

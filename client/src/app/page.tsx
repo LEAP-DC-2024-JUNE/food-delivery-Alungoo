@@ -1,9 +1,5 @@
-import React from "react";
-import hero2 from "../Images/hero2.png";
-import Image from "next/image";
-import { FoodCard } from "@/components/FoodCard";
-import { Carousel1 } from "@/components/Carousel1";
-
+"use client";
+import { useState, useEffect } from "react";
 export type FoodType = {
   type: string;
 };
@@ -13,94 +9,28 @@ export type Appetizers = {
   description: string;
 };
 
-const Home = () => {
-  const FoodCategories: FoodType[] = [
-    {
-      type: "Appetizer",
-    },
-    {
-      type: "Salad",
-    },
-    {
-      type: "Pizzas",
-    },
-    {
-      type: "Lunch favorites",
-    },
-    {
-      type: "Main dishes",
-    },
-    {
-      type: "Fish & Sea foods",
-    },
-    {
-      type: "Sea dish",
-    },
-    {
-      type: "Side dish",
-    },
-    {
-      type: "Brunch",
-    },
-    {
-      type: "Desserts",
-    },
-  ];
-  const cardDatas: Appetizers[] = [
-    {
-      title: "Finger Food",
-      price: 12.99,
-      description:
-        "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
-    },
-    {
-      title: "Cranberry Brie Bites",
-      price: 12.99,
-      description:
-        "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
-    },
-    {
-      title: "Sunshine Stackers ",
-      price: 12.33,
-      description:
-        "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
-    },
-    {
-      title: "Brie Crostini Appetizer",
-      price: 12.33,
-      description:
-        "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
-    },
-    {
-      title: "Sunshine Stackers ",
-      price: 12.33,
-      description:
-        "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
-    },
-    {
-      title: "Sunshine Stackers ",
-      price: 12.33,
-      description:
-        "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
-    },
-  ];
-  return (
-    <div>
-      <Image src={hero2} alt="banner picture" />
-      <div className=" my-[100px] px-[220px]">
-        <p className=" my-[50px] text-white text-[30px]">Categories</p>
-        <Carousel1 FoodCategories={FoodCategories} />
-      </div>
-      <div className="px-[200px] my-[50px]">
-        <p className=" my-[50px] text-white text-[30px]">Appetizers</p>
-        <div className=" grid grid-cols-3 gap-3">
-          {cardDatas.map((data, index) => {
-            return <FoodCard data={data} key={index} />;
-          })}
-        </div>
-      </div>
-    </div>
-  );
-};
+export default function Home() {
+  const [helloMessage, setHelloMessage] = useState("");
+  const getUsers = async () => {
+    try {
+      const response = await fetch(
+        "https://food-delivery-alungoo.onrender.com"
+      );
+      console.log("Response Status:", response.status);
+      console.log("Content-Type:", response.headers.get("content-type"));
 
-export default Home;
+      // Ensure it's JSON before parsing
+      if (!response.headers.get("content-type")?.includes("application/json")) {
+        throw new Error("Received non-JSON response from server");
+      }
+      const hello = await response.json();
+      setHelloMessage(hello.message);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    getUsers();
+  }, []);
+  return <div>{helloMessage}</div>;
+}
