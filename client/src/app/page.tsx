@@ -10,27 +10,14 @@ export type Appetizers = {
 };
 
 export default function Home() {
-  const [helloMessage, setHelloMessage] = useState("");
-  const getUsers = async () => {
-    try {
-      const response = await fetch(
-        "https://food-delivery-alungoo.onrender.com"
-      );
-      console.log("Response Status:", response.status);
-      console.log("Content-Type:", response.headers.get("content-type"));
+  const [message, setMessage] = useState("Loading...");
 
-      // Ensure it's JSON before parsing
-      if (!response.headers.get("content-type")?.includes("application/json")) {
-        throw new Error("Received non-JSON response from server");
-      }
-      const hello = await response.json();
-      setHelloMessage(hello.message);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
   useEffect(() => {
-    getUsers();
+    fetch("https://food-delivery-alungoo.onrender.com")
+      .then((res) => res.json())
+      .then((data) => setMessage(data.message))
+      .catch(() => setMessage("Error fetching data"));
   }, []);
-  return <div>{helloMessage}</div>;
+
+  return <div>{message}</div>;
 }
