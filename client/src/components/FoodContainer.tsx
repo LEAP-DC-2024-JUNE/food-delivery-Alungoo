@@ -1,87 +1,60 @@
+"use client";
 import React from "react";
-import hero2 from "../Images/hero2.png";
-import Image from "next/image";
-import Carousel1 from "@/components/Carousel1";
-import FoodCard from "@/components/FoodCard";
-
-export type FoodType = {
-  type: string;
-};
-
-export type Appetizers = {
-  title: string;
-  price: number;
-  description: string;
-};
+import useSWR from "swr";
+import { fetchFoodData } from "@/utils/fetchFoodData";
+import FoodCard from "./FoodCard";
+import { FoodCategoryType, FoodType } from "@/utils/types";
 
 const FoodContainer = () => {
-  const FoodCategories: FoodType[] = [
-    { type: "Appetizer" },
-    { type: "Salad" },
-    { type: "Pizzas" },
-    { type: "Lunch favorites" },
-    { type: "Main dishes" },
-    { type: "Fish & Sea foods" },
-    { type: "Sea dish" },
-    { type: "Side dish" },
-    { type: "Brunch" },
-    { type: "Desserts" },
-  ];
+  const {
+    data: categories,
+    error: categoriesError,
+    isLoading: categoriesLoading,
+  } = useSWR("food-category", fetchFoodData);
 
-  const cardDatas: Appetizers[] = [
-    {
-      title: "Finger Food",
-      price: 12.99,
-      description:
-        "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
-    },
-    {
-      title: "Cranberry Brie Bites",
-      price: 12.99,
-      description:
-        "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
-    },
-    {
-      title: "Sunshine Stackers",
-      price: 12.33,
-      description:
-        "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
-    },
-    {
-      title: "Brie Crostini Appetizer",
-      price: 12.33,
-      description:
-        "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
-    },
-    {
-      title: "Sunshine Stackers",
-      price: 12.33,
-      description:
-        "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
-    },
-    {
-      title: "Sunshine Stackers",
-      price: 12.33,
-      description:
-        "Fluffy pancakes stacked with fruits, cream, syrup, and powdered sugar",
-    },
-  ];
+  const {
+    data: foods,
+    error: foodsError,
+    isLoading: foodsLoading,
+  } = useSWR("foods", fetchFoodData);
 
+  if (categoriesLoading || foodsLoading) return <div>Loading ...</div>;
+  if (categoriesError || foodsError) return <div>Failed to load</div>;
+
+  const groupedFoods = categories
+    .slice(0, 3)
+    .map((category: FoodCategoryType) => {
+      const foodByCategory: FoodType[] = [];
+
+      for (let i = 0; i < foods.length; i++) {
+        if (foods[i].category === category._id) {
+          foodByCategory.push(foods[i]);
+        }
+      }
+
+      return {
+        categoryId: category._id,
+        categoryName: category.categoryName,
+        foods: foodByCategory,
+      };
+    });
+
+  console.log(groupedFoods, "<<food");
   return (
-    <div>
-      <Image src={hero2} alt="banner picture" />
-      <div className="my-[100px] px-[220px]">
-        <p className="my-[50px] text-white text-[30px]">Categories</p>
-        <Carousel1 FoodCategories={FoodCategories} />
-      </div>
-      <div className="px-[200px] my-[50px]">
-        <p className="my-[50px] text-white text-[30px]">Appetizers</p>
-        <div className="grid grid-cols-3 gap-3">
-          {cardDatas.map((data, index) => (
-            <FoodCard data={data} key={index} />
-          ))}
+    <div className="flex flex-col items-center justify-center w-full ">
+      {groupedFoods.map((categoryGroup: any) => (
+        <div key={categoryGroup.categoryId} className="w-full space-y-4">
+          <h2 className="text-white text-[30px]">
+            {categoryGroup.categoryName}
+          </h2>
+
+          <div className="grid grid-cols-3 gap-9 w-full">
+            {categoryGroup.foods.map((food: FoodType) => (
+              <FoodCard key={food._id} data={food} />
+            ))}
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 };

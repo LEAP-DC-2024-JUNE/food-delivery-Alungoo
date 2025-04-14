@@ -1,17 +1,16 @@
 import * as React from "react";
 import Image from "next/image";
-import Food1 from "../Images/food1.png";
+import { Pen } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { FoodType } from "@/utils/types";
-import { FoodDetail } from "./FoodDetail";
 
 type cardPropsType = {
   data: FoodType;
 };
 
-const FoodCard = ({ data }: cardPropsType) => {
+const FoodCardAdmin = ({ data }: cardPropsType) => {
   return (
-    <Card className="w-[365px] bg-white rounded-[20px] p-[16px] flex flex-col gap-3">
+    <Card className="w-[270.75px] bg-white rounded-[20px] p-[16px] flex flex-col gap-3 shadow-none">
       <CardHeader className="w-full flex justify-center p-0">
         <div className="relative">
           {data?.image ? (
@@ -19,17 +18,13 @@ const FoodCard = ({ data }: cardPropsType) => {
               <img
                 src={data?.image}
                 alt={data?.foodName}
-                style={{ width: "365px", height: "210px" }}
-                className="rounded-lg object-cover"
+                style={{ width: "238.75px", height: "129px" }}
+                className="rounded-xl object-cover"
               />
-
-              <FoodDetail
-                id={data._id}
-                foodImage={data.image}
-                foodName={data.foodName}
-                foodIngredients={data.ingredients}
-                foodPrice={data.price}
-              />
+              <span className=" absolute right-5 bottom-5 bg-white p-3 rounded-full">
+                {" "}
+                <Pen color="red" size={18} />
+              </span>
             </>
           ) : (
             <p>No image available</p>
@@ -38,14 +33,14 @@ const FoodCard = ({ data }: cardPropsType) => {
       </CardHeader>
       <CardContent className=" p-0">
         <div className="flex justify-between items-center">
-          <h1 className="text-[#EF4444] text-2xl font-semibold">
+          <h1 className="text-[#EF4444] text-[14px] font-medium pb-2">
             {data.foodName}
           </h1>
-          <p className=" font-medium">${data.price}</p>
+          <p className=" text-[12px]">${data.price}</p>
         </div>
-        <p className="text-sm font-normal">{data.ingredients}</p>
+        <p className="text-[12px] font-normal">{data.ingredients}</p>
       </CardContent>
     </Card>
   );
 };
-export default FoodCard;
+export default FoodCardAdmin;
