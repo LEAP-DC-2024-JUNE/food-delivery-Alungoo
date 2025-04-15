@@ -1,5 +1,5 @@
 "use client";
-import { ShoppingCart, X } from "lucide-react";
+import { ShoppingCart, Timer, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import { Soup } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { FoodOrderCompleteDialog } from "./Illustrations/FoodOrderCompleteDialog";
@@ -46,7 +46,7 @@ export function FoodSheet() {
     try {
       const res = await fetch(`http://localhost:4000/food-order/${userId}`);
       const foods = await res.json();
-      console.log(foods);
+      console.log(foods, "<<<foods");
       setFoodOrder(foods);
     } catch (err) {
       console.log(err);
@@ -165,10 +165,16 @@ export function FoodSheet() {
           <ShoppingCart size={40} color="red" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-full max-w-[471px] p-8 overflow-y-auto bg-stone-700 border-none rounded-l-2xl">
+      <SheetContent className="w-full max-w-[471px] p-8 overflow-y-auto bg-[#404040] border-none rounded-l-2xl">
+        <div>
+          <div className=" flex items-center gap-3 my-4 font-bold text-[20px] text-[#FAFAFA]">
+            <ShoppingCart />
+            Order detail
+          </div>
+        </div>
         <div className=" flex flex-col justify-center items-center">
           <Tabs defaultValue="Cart" className="w-[350px] ">
-            <TabsList className="grid w-full grid-cols-2 rounded-full">
+            <TabsList className="grid w-full grid-cols-2 rounded-full bg-red-500">
               <TabsTrigger value="Cart">Cart</TabsTrigger>
               <TabsTrigger value="Order">Order</TabsTrigger>
             </TabsList>
@@ -296,10 +302,45 @@ export function FoodSheet() {
             <TabsContent value="Order">
               <Card>
                 <CardHeader>
-                  <CardTitle>Order</CardTitle>
+                  <CardTitle>Order history</CardTitle>
                   <CardDescription></CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-2">{foodOrder}</CardContent>
+                {foodOrder.map((order: any) => (
+                  <CardContent className="space-y-2">
+                    <div key={order._id} className=" flex flex-col">
+                      <div className=" flex justify-between items-center">
+                        <p className=" text-[16px] font-semibold">
+                          ${order.totalPrice}
+                        </p>
+                        <p className="text-[12px] bg-zinc-100 border border-red-600 rounded-full px-2 py-1">
+                          {order.status.charAt(0).toUpperCase() +
+                            order.status.slice(1).toLowerCase()}
+                        </p>
+                      </div>
+                      <div>
+                        <div className=" flex flex-col gap-1 my-2">
+                          {order.foodOrderItems.map((item: any) => (
+                            <div
+                              key={item._id}
+                              className=" flex justify-between"
+                            >
+                              <p className=" flex items-center gap-3 text-[#71717A] text-[12px]">
+                                <Soup size={16} />
+                                {item.food.foodName}
+                              </p>
+                              <p className=" text-[12px]">x {item.quantity}</p>
+                            </div>
+                          ))}
+                        </div>
+                        <div className=" flex items-center gap-3 my-3 text-[#71717A] text-[12px]">
+                          <Timer size={16} />
+                          {new Date(order.createdAt).toLocaleString()}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                ))}
+
                 <CardFooter></CardFooter>
               </Card>
             </TabsContent>
