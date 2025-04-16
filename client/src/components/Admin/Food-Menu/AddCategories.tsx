@@ -78,7 +78,6 @@ export default function AddCategories() {
 
   return (
     <div className=" flex flex-col items-center absolute">
-      {/* Main Box: Avatar + Dishes Category + Badges + Add Category Button */}
       <div className="flex justify-end  max-w-[1171px] w-full my-2">
         <AvatarPic />
       </div>
@@ -86,10 +85,8 @@ export default function AddCategories() {
         <div className="">
           <p className="text-[20px] font-semibold mb-4">Dishes Category</p>
 
-          {/* Dialog to Add Category */}
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <div className="flex flex-wrap gap-3 items-center mb-4">
-              {/* All Dishes Badge */}
               <Badge variant="outline" className="px-4 py-2 rounded-full">
                 All Dishes
                 <span className="ml-3 text-xs font-semibold bg-black text-white rounded-full px-2 py-[0.7px]">
@@ -97,7 +94,6 @@ export default function AddCategories() {
                 </span>
               </Badge>
 
-              {/* Category Badges */}
               {categories?.map((cat: any, idx: number) => {
                 const countObj = groupedFood.find(
                   (item) => item.categoryName === cat.categoryName
@@ -119,7 +115,6 @@ export default function AddCategories() {
                 );
               })}
 
-              {/* Add Category Button */}
               <DialogTrigger asChild>
                 <div className="w-[38px] h-[38px]">
                   <AddButtonFoodMenu />
@@ -127,7 +122,6 @@ export default function AddCategories() {
               </DialogTrigger>
             </div>
 
-            {/* Dialog Content for Adding New Category */}
             <DialogContent className="bg-white">
               <DialogHeader>
                 <DialogTitle>Add new category</DialogTitle>
@@ -156,7 +150,6 @@ export default function AddCategories() {
         </div>
       </div>
 
-      {/* Separate FoodByCategory Section */}
       <div className="w-full max-w-[1171px] mt-10 bg-white rounded-2xl">
         <FoodByCategory />
       </div>
