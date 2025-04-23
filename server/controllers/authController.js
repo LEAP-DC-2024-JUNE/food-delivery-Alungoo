@@ -22,6 +22,26 @@ export const createUser = async (req, res) => {
   }
 };
 
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    const updatedUser = await userModel.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "User updated", user: updatedUser });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 export const getUser = async (req, res) => {
   try {
     const users = await userModel.find().select("-password");
@@ -35,7 +55,6 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // User
     const user = await userModel.findOne({ email });
 
     if (!user) {
@@ -63,7 +82,7 @@ export const loginUser = async (req, res) => {
       status: "success",
       message: "User login successful",
       token,
-      role,
+      role: user.role,
     });
   } catch (error) {
     res.status(500).json({

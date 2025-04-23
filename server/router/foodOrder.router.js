@@ -11,13 +11,13 @@ export const foodOrderRouter = express.Router();
 
 foodOrderRouter
   .route("/:userId")
-  .get(authentication, authorization("ADMIN"), getFoodOrderByUserId);
+  .get(authentication, authorization("USER"), getFoodOrderByUserId);
 foodOrderRouter
   .route("/")
   .get(authentication, authorization("ADMIN"), getAllFoodOrders);
 foodOrderRouter
   .route("/")
-  .post(authentication, authorization("ADMIN"), createFoodOrder);
+  .post(authentication, authorization("USER"), createFoodOrder);
 foodOrderRouter
   .route("/:orderId/status")
   .patch(authentication, authorization("ADMIN"), updateFoodOrder);

@@ -38,18 +38,6 @@ const SideMenu = () => {
           <span>Orders</span>
         </Button>
       </Link>
-
-      <Link href="/settings">
-        <Button
-          variant="ghost"
-          className={`rounded-full flex items-center gap-2 ${
-            pathname === "/settings" ? "bg-black text-white" : ""
-          }`}
-        >
-          <Settings size={18} />
-          <span>Settings</span>
-        </Button>
-      </Link>
     </div>
   );
 };

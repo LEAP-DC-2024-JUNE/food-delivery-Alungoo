@@ -39,21 +39,19 @@ const LoginForm = () => {
           return;
         }
 
+        // Save the token to localStorage
         localStorage.setItem("token", data.token);
 
-        const decodedToken = jwtDecode(data.token);
-        console.log("Decoded token:", decodedToken);
-
-        const userRole = (decodedToken as any).role?.toLowerCase();
+        // Optionally, save the role if you want to use it later
+        const userRole = data.role; // This comes directly from the response
         console.log("User role:", userRole);
 
-        if (userRole === "admin") {
+        // Check user role and redirect accordingly
+        if (userRole === "ADMIN") {
           router.push("/food-menu");
         } else {
           router.push("/");
         }
-
-        console.log("Login response:", data);
       } catch (err) {
         setError("Something went wrong");
       }

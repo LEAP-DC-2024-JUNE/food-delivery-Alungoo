@@ -3,6 +3,7 @@ import { uploadImageToCloudinary } from "@/utils/uploadImageToCloudinary";
 import { useState, useEffect } from "react";
 import AddFoodDialog from "./AddFoodDialog";
 import FoodCardAdmin from "./FoodCardAdmin";
+import { renderUrl } from "@/utils/render";
 interface FoodByCategoryProps {
   categories: any[];
   groupedFood: () => void;
@@ -47,7 +48,7 @@ const FoodByCategory: React.FC<FoodByCategoryProps> = ({
     const token = localStorage.getItem("token");
     try {
       const imageUrl = await uploadImageToCloudinary(foodInput.image as File);
-      await fetch("http://127.0.0.1:4000/foods", {
+      await fetch(`${renderUrl}/foods`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

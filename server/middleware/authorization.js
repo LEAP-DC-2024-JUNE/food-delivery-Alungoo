@@ -1,11 +1,13 @@
-//permission
-
-export const authorization = (role) => (req, res, next) => {
+export const authorization = (requiredRole) => (req, res, next) => {
   try {
-    const user = req.body.user;
-    if (user.role !== role) {
-      return res.status(403).json({ message: "Access denied: Admins only" });
+    console.log("User Role:", req.user?.role);
+
+    if (!req.user || req.user.role !== requiredRole) {
+      return res
+        .status(403)
+        .json({ message: `Access denied: ${requiredRole}s only` });
     }
+
     next();
   } catch (err) {
     res.status(401).json({ message: "Invalid token" });

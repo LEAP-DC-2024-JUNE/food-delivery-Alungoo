@@ -1,9 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import useSWR, { mutate } from "swr";
-import { fetchFoodCategory } from "@/utils/fetchFoodData";
 import { Badge } from "@/components/ui/badge";
-import { CirclePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,34 +15,44 @@ import { Label } from "@/components/ui/label";
 import FoodByCategory from "@/components/Admin/Food-Menu/AllfoodBycategory";
 import { AvatarPic } from "../Common/Avatar";
 import AddButtonFoodMenu from "@/svg/AddButtonFoodMenu";
+import { renderToReadableStream } from "next/dist/server/app-render/entry-base";
+import { renderUrl } from "@/utils/render";
 
 export default function AddCategories() {
+  const [token, setToken] = useState<string | null>(null);
   const [groupedFood, setGroupedFood] = useState<any[]>([]);
   const [categoryName, setCategoryName] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const token = localStorage.getItem("token");
+  useEffect(() => {
+    // This runs only on the client
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
   const fetchGroupedFood = async () => {
+    if (!token) return; // Wait until token is set
+
     try {
       const headers = {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       };
-      const res = await fetch("http://127.0.0.1:4000/food-group/admin", {
+      const res = await fetch(`${renderUrl}/food-group/admin`, {
         method: "GET",
-        headers: headers,
+        headers,
       });
       const data = await res.json();
-      console.log(data, "<<data");
       setCategories(data);
       const foodCounts = data.map((group: any) => ({
         categoryName: group?.categoryName,
         count: group.foods.length,
       }));
       setGroupedFood(foodCounts);
-      console.log(groupedFood, "<<groupedfoodbn");
     } catch (err) {
       console.error("Error fetching food groups:", err);
     }
@@ -58,7 +65,7 @@ export default function AddCategories() {
 
   const addCategory = async () => {
     try {
-      await fetch("http://127.0.0.1:4000/food-category", {
+      await fetch(`${renderUrl}/food-category`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -9,7 +9,7 @@ const FoodInfoCard = ({ foodItem }: any) => {
     <div className="flex items-center gap-2">
       <div>
         <img
-          src={food.image || "/api/placeholder/40/40"}
+          src={food.image || "N/A"}
           alt={food.foodName}
           width={32}
           height={31}

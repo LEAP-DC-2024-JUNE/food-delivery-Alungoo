@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ChevronsUpDown } from "lucide-react";
+import { renderUrl } from "@/utils/render";
 
 const DeliveryModal = ({
   orderId,
@@ -42,17 +43,14 @@ const DeliveryModal = ({
     setLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(
-        `http://localhost:4000/food-order/${orderId}/status`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ status }),
-        }
-      );
+      const res = await fetch(`${renderUrl}/food-order/${orderId}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status }),
+      });
 
       if (!res.ok) throw new Error("Failed to update");
 

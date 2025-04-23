@@ -16,6 +16,7 @@ import { Soup } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { FoodOrderCompleteDialog } from "./Illustrations/FoodOrderCompleteDialog";
+import { renderUrl } from "@/utils/render";
 
 type FoodItem = {
   id: string;
@@ -49,12 +50,12 @@ export function FoodSheet() {
       "Content-Type": "application/json",
     };
     try {
-      const res = await fetch(`http://localhost:4000/food-order/${userId}`, {
+      const res = await fetch(`${renderUrl}/food-order/${userId}`, {
         method: "GET",
         headers: headers,
       });
       const foods = await res.json();
-      console.log(foods, "<<<foods");
+      console.log(typeof foods, foods, "<<<foods");
       setFoodOrder(foods);
     } catch (err) {
       console.log(err);
@@ -145,9 +146,12 @@ export function FoodSheet() {
         status: "PENDING",
       };
 
-      const response = await fetch("http://localhost:4000/food-order", {
+      const response = await fetch(`${renderUrl}/food-order`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(orderData),
       });
 
@@ -313,7 +317,7 @@ export function FoodSheet() {
                   <CardTitle>Order history</CardTitle>
                   <CardDescription></CardDescription>
                 </CardHeader>
-                {foodOrder.map((order: any) => (
+                {foodOrder?.map((order: any) => (
                   <CardContent className="space-y-2">
                     <div key={order._id} className=" flex flex-col">
                       <div className=" flex justify-between items-center">
