@@ -40,12 +40,16 @@ const DeliveryModal = ({
 
   const saveStatus = async () => {
     setLoading(true);
+    const token = localStorage.getItem("token");
     try {
       const res = await fetch(
         `http://localhost:4000/food-order/${orderId}/status`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({ status }),
         }
       );

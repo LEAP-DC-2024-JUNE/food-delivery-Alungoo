@@ -12,9 +12,12 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import FileUpload from "../Common/FileUpload";
 import { DashedFoodAddCard } from "./DashedFoodAddCard";
-import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
-
+import { useState } from "react";
+interface AddFoodDialogProps {
+  open: boolean;
+  setOpen: (value: boolean) => void;
+}
 const AddFoodDialog = ({
   foodData,
   selectedCategory,
@@ -23,14 +26,15 @@ const AddFoodDialog = ({
   setFoodInput,
   createFood,
   handleInputChange,
+  open,
+  setOpen,
 }: any) => {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div
           onClick={() => {
-            console.log("Clicked Category:", foodData._id.categoryName);
-            setSelectedCategory(foodData._id.categoryName);
+            setSelectedCategory(foodData.categoryName);
             setFoodInput({
               ...foodInput,
               category: foodData._id,
@@ -41,7 +45,7 @@ const AddFoodDialog = ({
         </div>
       </DialogTrigger>
 
-      <DialogContent className="dark:bg-slate-800 bg-slate-50">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle className=" mb-3">
             Add New Dish to {selectedCategory}

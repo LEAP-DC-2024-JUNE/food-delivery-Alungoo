@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
 import { Plus, Minus, Check } from "lucide-react";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { DeliveryAddressInput } from "./DeliveryInputModal";
 
 type FoodDetailProps = {
   id: string;
@@ -23,6 +24,7 @@ export function FoodDetail({
 }: FoodDetailProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [deliveryInput, setDeliveryInput] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
   const price = foodPrice * quantity;
@@ -44,18 +46,25 @@ export function FoodDetail({
       ...cart.filter((item: any) => item.id !== id),
       newItem,
     ];
-
     localStorage.setItem("foodCart", JSON.stringify(updatedCart));
     setIsOpen(false);
-
-    setShowAlert(true);
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 1500);
+    setDeliveryInput(true);
   };
 
   return (
     <>
+      {deliveryInput && (
+        <DeliveryAddressInput
+          open={deliveryInput}
+          onOpenChange={(isOpen) => {
+            setDeliveryInput(isOpen);
+            setShowAlert(true);
+            setTimeout(() => {
+              setShowAlert(false);
+            }, 1500);
+          }}
+        />
+      )}
       {showAlert && (
         <div className="fixed top-10 left-1/2 transform -translate-x-1/2 z-50">
           <Alert className="bg-black text-white shadow-lg">
@@ -68,7 +77,6 @@ export function FoodDetail({
           </Alert>
         </div>
       )}
-
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button className="absolute bottom-2 right-2 bg-white hover:bg-gray-100 text-red-500 rounded-full w-10 h-10 p-0">

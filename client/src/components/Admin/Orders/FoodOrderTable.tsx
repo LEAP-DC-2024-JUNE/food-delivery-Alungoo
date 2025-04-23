@@ -20,10 +20,16 @@ const FoodOrderTable = () => {
   const [allOrderedData, setAllOrderedData] = useState<any[]>([]);
 
   const [openRows, setOpenRows] = useState<{ [key: string]: boolean }>({});
-
+  const token = localStorage.getItem("token");
+  console.log(token, "Token");
   const getAllFoodOrder = async () => {
     try {
-      const response = await fetch("http://localhost:4000/food-order");
+      const response = await fetch("http://localhost:4000/food-order", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       setAllOrderedData(data);
     } catch (err) {
@@ -70,7 +76,7 @@ const FoodOrderTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {allOrderedData.map((order, index) => (
+          {allOrderedData?.map((order, index) => (
             <TableRow key={order._id}>
               <TableCell>
                 <Checkbox />

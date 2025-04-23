@@ -43,8 +43,16 @@ export function FoodSheet() {
   const [isOpen, setIsOpen] = useState(false);
   const [foodOrder, setFoodOrder] = useState<any>([]);
   const foodOrderDetails = async (userId: string) => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
     try {
-      const res = await fetch(`http://localhost:4000/food-order/${userId}`);
+      const res = await fetch(`http://localhost:4000/food-order/${userId}`, {
+        method: "GET",
+        headers: headers,
+      });
       const foods = await res.json();
       console.log(foods, "<<<foods");
       setFoodOrder(foods);

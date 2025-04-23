@@ -12,7 +12,7 @@ export function DashedFoodAddCard({ foodData }: any) {
           <AddButtonFoodMenu />
           <span className="text-sm text-center font-medium ">
             Add new Dish to <br />
-            {foodData._id.categoryName}
+            {foodData?.categoryName}
           </span>
         </div>
       </CardContent>

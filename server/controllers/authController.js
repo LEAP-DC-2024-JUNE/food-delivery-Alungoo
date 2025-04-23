@@ -32,28 +32,9 @@ export const getUser = async (req, res) => {
 };
 
 export const loginUser = async (req, res) => {
-  const ADMIN_EMAIL = "admin@yahoo.com";
-  const ADMIN_PASSWORD = "admin123456";
-
   const { email, password } = req.body;
 
   try {
-    // Admin
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      const token = jwt.sign(
-        { email: ADMIN_EMAIL, role: "admin" },
-        process.env.JWT_SECRET,
-        { expiresIn: "1h" }
-      );
-
-      return res.json({
-        success: true,
-        message: "Admin login successful",
-        token,
-        role: "admin",
-      });
-    }
-
     // User
     const user = await userModel.findOne({ email });
 
@@ -82,7 +63,7 @@ export const loginUser = async (req, res) => {
       status: "success",
       message: "User login successful",
       token,
-      role: user.role.toLowerCase(),
+      role,
     });
   } catch (error) {
     res.status(500).json({
