@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ChevronsUpDown } from "lucide-react";
-import { renderUrl } from "@/utils/render";
+import { localUrl, renderUrl } from "@/utils/render";
 
 const DeliveryModal = ({
   orderId,
@@ -43,7 +43,7 @@ const DeliveryModal = ({
     setLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`${renderUrl}/food-order/${orderId}/status`, {
+      const res = await fetch(`${localUrl}/food-order/${orderId}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

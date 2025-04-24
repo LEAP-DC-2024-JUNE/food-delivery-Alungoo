@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { ChevronLeft } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { jwtDecode } from "jwt-decode";
+import Link from "next/link";
 
 const LoginForm = () => {
   const [error, setError] = useState("");
@@ -39,14 +39,11 @@ const LoginForm = () => {
           return;
         }
 
-        // Save the token to localStorage
         localStorage.setItem("token", data.token);
 
-        // Optionally, save the role if you want to use it later
-        const userRole = data.role; // This comes directly from the response
+        const userRole = data.role;
         console.log("User role:", userRole);
 
-        // Check user role and redirect accordingly
         if (userRole === "ADMIN") {
           router.push("/food-menu");
         } else {
@@ -112,7 +109,10 @@ const LoginForm = () => {
           </Button>
           <p className=" text-zinc-500 text-xs text-center">
             Dont have an account?
-            <span className=" text-blue-600 cursor-pointer"> Sign up</span>
+            <Link href={"/signup"} className=" text-blue-600 cursor-pointer">
+              {" "}
+              Sign up
+            </Link>
           </p>
         </form>
       </div>

@@ -7,9 +7,7 @@ import { authorization } from "../middleware/authorization.js";
 import { authentication } from "../middleware/authentication.js";
 
 export const allFoodByCategoryRouter = express.Router();
-allFoodByCategoryRouter
-  .route("/")
-  .get(authentication, authorization("USER"), getFoodAggregation);
+allFoodByCategoryRouter.get("/", getFoodAggregation);
 allFoodByCategoryRouter
   .route("/admin")
   .get(authentication, authorization("ADMIN"), getFoodCategoryAggregation);

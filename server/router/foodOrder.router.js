@@ -9,15 +9,11 @@ import { authorization } from "../middleware/authorization.js";
 import { authentication } from "../middleware/authentication.js";
 export const foodOrderRouter = express.Router();
 
-foodOrderRouter
-  .route("/:userId")
-  .get(authentication, authorization("USER"), getFoodOrderByUserId);
+foodOrderRouter.get("/:userId", getFoodOrderByUserId);
 foodOrderRouter
   .route("/")
   .get(authentication, authorization("ADMIN"), getAllFoodOrders);
-foodOrderRouter
-  .route("/")
-  .post(authentication, authorization("USER"), createFoodOrder);
+foodOrderRouter.post("/", createFoodOrder);
 foodOrderRouter
   .route("/:orderId/status")
   .patch(authentication, authorization("ADMIN"), updateFoodOrder);

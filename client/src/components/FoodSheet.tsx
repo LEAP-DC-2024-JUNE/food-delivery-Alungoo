@@ -16,7 +16,7 @@ import { Soup } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { FoodOrderCompleteDialog } from "./Illustrations/FoodOrderCompleteDialog";
-import { renderUrl } from "@/utils/render";
+import { localUrl, renderUrl } from "@/utils/render";
 
 type FoodItem = {
   id: string;
@@ -44,16 +44,13 @@ export function FoodSheet() {
   const [isOpen, setIsOpen] = useState(false);
   const [foodOrder, setFoodOrder] = useState<any>([]);
   const foodOrderDetails = async (userId: string) => {
-    const token = localStorage.getItem("token");
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
     try {
-      const res = await fetch(`${renderUrl}/food-order/${userId}`, {
-        method: "GET",
-        headers: headers,
-      });
+      const res = await fetch(`${localUrl}/food-order/${userId}`);
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Failed to fetch food orders:", res.status, text);
+        return;
+      }
       const foods = await res.json();
       console.log(typeof foods, foods, "<<<foods");
       setFoodOrder(foods);
@@ -146,7 +143,7 @@ export function FoodSheet() {
         status: "PENDING",
       };
 
-      const response = await fetch(`${renderUrl}/food-order`, {
+      const response = await fetch(`${localUrl}/food-order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

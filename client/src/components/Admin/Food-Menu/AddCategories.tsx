@@ -15,8 +15,8 @@ import { Label } from "@/components/ui/label";
 import FoodByCategory from "@/components/Admin/Food-Menu/AllfoodBycategory";
 import { AvatarPic } from "../Common/Avatar";
 import AddButtonFoodMenu from "@/svg/AddButtonFoodMenu";
-import { renderToReadableStream } from "next/dist/server/app-render/entry-base";
-import { renderUrl } from "@/utils/render";
+
+import { localUrl, renderUrl } from "@/utils/render";
 
 export default function AddCategories() {
   const [token, setToken] = useState<string | null>(null);
@@ -27,7 +27,6 @@ export default function AddCategories() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
-    // This runs only on the client
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
@@ -35,14 +34,14 @@ export default function AddCategories() {
   }, []);
 
   const fetchGroupedFood = async () => {
-    if (!token) return; // Wait until token is set
+    if (!token) return;
 
     try {
       const headers = {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       };
-      const res = await fetch(`${renderUrl}/food-group/admin`, {
+      const res = await fetch(`${localUrl}/food-group/admin`, {
         method: "GET",
         headers,
       });
@@ -90,8 +89,10 @@ export default function AddCategories() {
   };
 
   useEffect(() => {
-    fetchGroupedFood();
-  }, []);
+    if (token) {
+      fetchGroupedFood();
+    }
+  }, [token]);
 
   if (!categories.length) return <div>Loading...</div>;
   return (

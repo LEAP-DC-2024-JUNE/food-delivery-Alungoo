@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Signup = () => {
   const [error, setError] = useState("");
@@ -88,7 +89,10 @@ const Signup = () => {
           </Button>
           <p className=" text-zinc-500 text-xs text-center">
             Already have an account?
-            <span className=" text-blue-600 cursor-pointer"> Log in</span>
+            <Link href="/login" className=" text-blue-600 cursor-pointer">
+              {" "}
+              Log in
+            </Link>
           </p>
         </form>
       </div>

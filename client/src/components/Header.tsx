@@ -1,9 +1,10 @@
 "use client";
 import HeaderLogo from "@/svg/HeaderLogo";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { MapPin, User } from "lucide-react";
+import { jwtDecode } from "jwt-decode";
 import {
   Tooltip,
   TooltipContent,
@@ -13,14 +14,40 @@ import {
 import { FoodSheet } from "./FoodSheet";
 import { DeliveryAddressInput } from "./DeliveryInputModal";
 
+type DecodedToken = {
+  id: string;
+  role: string;
+  email: string;
+  iat: number;
+  exp: number;
+};
+
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [deliveryInput, setDeliveryInput] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return;
+    }
+
+    try {
+      const decodedToken: DecodedToken = jwtDecode(token);
+      setUserEmail(decodedToken.email);
+      console.log("Decoded email:", decodedToken.email);
+    } catch (err) {
+      console.error("Token decode failed:", err);
+    }
+  }, []);
+  const handleSignout = () => {
+    localStorage.removeItem("token");
+  };
 
   return (
     <div className="bg-[#18181B] w-full flex justify-center">
       <div className="w-full max-w-screen-xl lg:w-[1264px] flex justify-between py-3 items-center">
-        <div className="">
+        <div>
           <HeaderLogo />
         </div>
         <div className="flex gap-3">
@@ -38,9 +65,7 @@ const Header = () => {
           {deliveryInput && (
             <DeliveryAddressInput
               open={deliveryInput}
-              onOpenChange={(isOpen) => {
-                setDeliveryInput(isOpen);
-              }}
+              onOpenChange={setDeliveryInput}
             />
           )}
           <TooltipProvider>
@@ -50,12 +75,25 @@ const Header = () => {
               </TooltipTrigger>
               <TooltipContent className="bg-[#FFFFFF] rounded-3xl text-black">
                 <div className="flex flex-col justify-center items-center gap-4 p-4 rounded-[12px]">
-                  <strong className="text-[16px]">Test@gmail.com</strong>
-                  <Link href="/login">
-                    <Button className=" rounded-full font-medium">
-                      Log in
-                    </Button>
-                  </Link>
+                  <strong className="text-[16px]">
+                    {userEmail || "Guest"}
+                  </strong>
+                  {userEmail ? (
+                    <Link href="/login">
+                      <Button
+                        onClick={handleSignout}
+                        className="rounded-full font-medium"
+                      >
+                        Sign out
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Link href="/login">
+                      <Button className="rounded-full font-medium">
+                        Log in
+                      </Button>
+                    </Link>
+                  )}
                 </div>
               </TooltipContent>
             </Tooltip>

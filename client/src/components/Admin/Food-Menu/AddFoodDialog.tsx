@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import FileUpload from "../Common/FileUpload";
 import { DashedFoodAddCard } from "./DashedFoodAddCard";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+
 interface AddFoodDialogProps {
   open: boolean;
   setOpen: (value: boolean) => void;

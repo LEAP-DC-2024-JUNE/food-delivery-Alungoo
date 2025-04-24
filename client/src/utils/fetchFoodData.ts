@@ -10,7 +10,7 @@ export const getAuthHeaders = () => {
 };
 export const fetchFoodData = async (url: any) => {
   try {
-    const res = await axios.get(`http://localhost:4000/${url}`, getAuthHeaders());
+    const res = await axios.get(`http://localhost:4000/${url}`);
 
     const food = res.data;
     console.log(food);
@@ -22,7 +22,7 @@ export const fetchFoodData = async (url: any) => {
 };
 export const fetchFoodCategory = async (url: any) => {
   try {
-    const res = await axios.get(`http://localhost:4000/${url}`, getAuthHeaders());
+    const res = await axios.get(`http://localhost:4000/${url}`);
 
     const food = res.data;
     console.log(food);

@@ -13,7 +13,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { ChevronDown, ChevronsUpDown } from "lucide-react";
 import DeliveryModal from "./DeliveryModal";
-import { renderUrl } from "@/utils/render";
+import { localUrl, renderUrl } from "@/utils/render";
 
 const FoodOrderTable = () => {
   const [allOrderedData, setAllOrderedData] = useState<any[]>([]);
@@ -24,7 +24,7 @@ const FoodOrderTable = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const response = await fetch(`${renderUrl}/food-order`, {
+      const response = await fetch(`${localUrl}/food-order`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
