@@ -8,7 +8,7 @@ import { foodOrderRouter } from "./router/foodOrder.router.js";
 import { authRouter } from "./router/auth.router.js";
 
 const server = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 connectDB();
 server.use(express.json());
