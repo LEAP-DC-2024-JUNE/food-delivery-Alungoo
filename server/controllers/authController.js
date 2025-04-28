@@ -117,7 +117,7 @@ export const forgotPassword = async (req, res) => {
         pass: process.env.MY_PASSWORD,
       },
     });
-    const resetLink = `http://localhost:3000/reset-password/${token}`;
+    const resetLink = `https://food-delivery-client-delta-rose.vercel.app/reset-password/${token}`;
 
     const receiver = {
       from: "nomnom-food-delivery@gmail.com",
