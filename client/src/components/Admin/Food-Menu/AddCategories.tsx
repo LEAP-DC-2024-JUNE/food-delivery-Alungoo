@@ -41,7 +41,7 @@ export default function AddCategories() {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       };
-      const res = await fetch(`${localUrl}/food-group/admin`, {
+      const res = await fetch(`${renderUrl}/food-group/admin`, {
         method: "GET",
         headers,
       });
@@ -94,7 +94,7 @@ export default function AddCategories() {
     }
   }, [token]);
 
-  if (!categories.length) return <div>Loading...</div>;
+  if (!categories.length) return <div>Only for admin use!</div>;
   return (
     <div className="flex flex-col items-center absolute">
       <div className="flex justify-end max-w-[1171px] w-full my-2">

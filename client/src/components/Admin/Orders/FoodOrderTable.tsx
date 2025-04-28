@@ -24,7 +24,7 @@ const FoodOrderTable = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const response = await fetch(`${localUrl}/food-order`, {
+      const response = await fetch(`${renderUrl}/food-order`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -32,7 +32,7 @@ export function DeliveryAddressInput({
   const handleOnChange = async () => {
     onOpenChange(false);
     if (userId) {
-      const updateUser = await fetch(`${localUrl}/auth/update/${userId}`, {
+      const updateUser = await fetch(`${renderUrl}/auth/update/${userId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

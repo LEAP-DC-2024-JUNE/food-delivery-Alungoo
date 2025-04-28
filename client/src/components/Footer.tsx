@@ -1,5 +1,4 @@
 import React from "react";
-import Marquee from "../projComponents/Marquee";
 import FooterLogo from "@/svg/FooterLogo";
 import FbLogo from "@/svg/FbLogo";
 import InstaLogo from "@/svg/InstaLogo";

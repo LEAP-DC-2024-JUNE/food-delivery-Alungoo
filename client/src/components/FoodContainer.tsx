@@ -1,11 +1,11 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import useSWR from "swr";
 import { fetchFoodData } from "@/utils/fetchFoodData";
 import FoodCard from "./FoodCard";
 import { FoodCategoryType, FoodType } from "@/utils/types";
 
-const FoodContainer = () => {
+const FoodContainer = ({ selectedBadge }: any) => {
   const {
     data: categories,
     error: categoriesError,
@@ -20,38 +20,63 @@ const FoodContainer = () => {
 
   if (categoriesLoading || foodsLoading) return <div>Loading ...</div>;
   if (categoriesError || foodsError) return <div>Failed to load</div>;
+  if (!categories || !foods) return <div>No data available</div>;
 
-  const groupedFoods = categories
-    .slice(0, 3)
-    .map((category: FoodCategoryType) => {
-      const foodByCategory: FoodType[] = [];
+  let categoriesToDisplay;
 
-      for (let i = 0; i < foods.length; i++) {
-        if (foods[i].category === category._id) {
-          foodByCategory.push(foods[i]);
-        }
-      }
+  if (selectedBadge && selectedBadge !== "") {
+    const selectedCategory = categories.find(
+      (category: any) => category.categoryName === selectedBadge
+    );
 
-      return {
-        categoryId: category._id,
-        categoryName: category.categoryName,
-        foods: foodByCategory,
-      };
-    });
+    const otherCategories = categories.filter(
+      (category: any) => category.categoryName !== selectedBadge
+    );
 
-  console.log(groupedFoods, "<<food");
+    if (selectedCategory) {
+      categoriesToDisplay = [selectedCategory, ...otherCategories];
+    } else {
+      categoriesToDisplay = categories;
+    }
+  } else {
+    categoriesToDisplay = categories;
+  }
+
+  const limitedCategories = categoriesToDisplay.slice(0, 3);
+
+  const groupedFoods = limitedCategories.map((category: FoodCategoryType) => {
+    const foodByCategory = foods.filter(
+      (food: FoodType) => food.category === category._id
+    );
+
+    return {
+      categoryId: category._id,
+      categoryName: category.categoryName,
+      foods: foodByCategory,
+    };
+  });
+
   return (
-    <div className="flex flex-col items-center justify-center w-full ">
-      {groupedFoods.map((categoryGroup: any) => (
-        <div key={categoryGroup.categoryId} className="w-full space-y-4">
-          <h2 className="text-white text-[30px]">
+    <div className="flex flex-col items-center justify-center w-full gap-6">
+      {groupedFoods.map((categoryGroup: any, index: number) => (
+        <div key={categoryGroup.categoryId} className="w-full space-y-2 mb-4">
+          <h2 className="text-white text-[30px] mb-6">
             {categoryGroup.categoryName}
+            {selectedBadge &&
+              index === 0 &&
+              selectedBadge === categoryGroup.categoryName}
           </h2>
 
           <div className="grid grid-cols-3 gap-9 w-full">
-            {categoryGroup.foods.map((food: FoodType) => (
-              <FoodCard key={food._id} data={food} />
-            ))}
+            {categoryGroup.foods.length > 0 ? (
+              categoryGroup.foods.map((food: FoodType) => (
+                <FoodCard key={food._id} data={food} />
+              ))
+            ) : (
+              <p className="text-white col-span-3">
+                No food items found in this category.
+              </p>
+            )}
           </div>
         </div>
       ))}

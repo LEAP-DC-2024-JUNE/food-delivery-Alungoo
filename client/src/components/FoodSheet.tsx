@@ -17,6 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { FoodOrderCompleteDialog } from "./Illustrations/FoodOrderCompleteDialog";
 import { localUrl, renderUrl } from "@/utils/render";
+import Image from "next/image";
 
 type FoodItem = {
   id: string;
@@ -45,7 +46,7 @@ export function FoodSheet() {
   const [foodOrder, setFoodOrder] = useState<any>([]);
   const foodOrderDetails = async (userId: string) => {
     try {
-      const res = await fetch(`${localUrl}/food-order/${userId}`);
+      const res = await fetch(`${renderUrl}/food-order/${userId}`);
       if (!res.ok) {
         const text = await res.text();
         console.error("Failed to fetch food orders:", res.status, text);
@@ -143,7 +144,7 @@ export function FoodSheet() {
         status: "PENDING",
       };
 
-      const response = await fetch(`${localUrl}/food-order`, {
+      const response = await fetch(`${renderUrl}/food-order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -228,7 +229,7 @@ export function FoodSheet() {
                               </Button>
                             </div>
 
-                            <div className="flex justify-between items-center mt-2">
+                            <div className="flex justify-between items-center mt-1">
                               <div className="flex items-center gap-2">
                                 <Button
                                   onClick={() =>
@@ -266,9 +267,13 @@ export function FoodSheet() {
                       </div>
                     ))
                   ) : (
-                    <div className="text-center text-gray-400 py-8">
-                      Your cart is empty
-                    </div>
+                    <Image
+                      src="/empty-food-cart.png"
+                      alt="cardisempty"
+                      className="py-8"
+                      width={439}
+                      height={192}
+                    />
                   )}
                   {showSuccessDialog && (
                     <FoodOrderCompleteDialog
@@ -314,41 +319,52 @@ export function FoodSheet() {
                   <CardTitle>Order history</CardTitle>
                   <CardDescription></CardDescription>
                 </CardHeader>
-                {foodOrder?.map((order: any) => (
-                  <CardContent className="space-y-2">
-                    <div key={order._id} className=" flex flex-col">
-                      <div className=" flex justify-between items-center">
-                        <p className=" text-[16px] font-semibold">
-                          ${order.totalPrice}
-                        </p>
-                        <p className="text-[12px] bg-zinc-100 border border-red-600 rounded-full px-2 py-1">
-                          {order.status.charAt(0).toUpperCase() +
-                            order.status.slice(1).toLowerCase()}
-                        </p>
-                      </div>
-                      <div>
-                        <div className=" flex flex-col gap-1 my-2">
-                          {order.foodOrderItems.map((item: any) => (
-                            <div
-                              key={item._id}
-                              className=" flex justify-between"
-                            >
-                              <p className=" flex items-center gap-3 text-[#71717A] text-[12px]">
-                                <Soup size={16} />
-                                {item.food.foodName}
-                              </p>
-                              <p className=" text-[12px]">x {item.quantity}</p>
-                            </div>
-                          ))}
+                {foodOrder.length > 0 ? (
+                  foodOrder.map((order: any) => (
+                    <CardContent key={order._id} className="space-y-2">
+                      <div className="flex flex-col">
+                        <div className="flex justify-between items-center">
+                          <p className="text-[16px] font-semibold">
+                            ${order.totalPrice}
+                          </p>
+                          <p className="text-[12px] bg-zinc-100 border border-red-600 rounded-full px-2 py-1">
+                            {order.status.charAt(0).toUpperCase() +
+                              order.status.slice(1).toLowerCase()}
+                          </p>
                         </div>
-                        <div className=" flex items-center gap-3 my-3 text-[#71717A] text-[12px]">
-                          <Timer size={16} />
-                          {new Date(order.createdAt).toLocaleString()}
+                        <div>
+                          <div className="flex flex-col gap-1 my-2">
+                            {order.foodOrderItems.map((item: any) => (
+                              <div
+                                key={item._id}
+                                className="flex justify-between"
+                              >
+                                <p className="flex items-center gap-3 text-[#71717A] text-[12px]">
+                                  <Soup size={16} />
+                                  {item.food.foodName}
+                                </p>
+                                <p className="text-[12px]">x {item.quantity}</p>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="flex items-center gap-3 my-3 text-[#71717A] text-[12px]">
+                            <Timer size={16} />
+                            {new Date(order.createdAt).toLocaleString()}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                ))}
+                    </CardContent>
+                  ))
+                ) : (
+                  <div className="flex justify-center">
+                    <Image
+                      src="/no-food-order.png"
+                      width={439}
+                      height={192}
+                      alt="No food orders available"
+                    />
+                  </div>
+                )}
 
                 <CardFooter></CardFooter>
               </Card>

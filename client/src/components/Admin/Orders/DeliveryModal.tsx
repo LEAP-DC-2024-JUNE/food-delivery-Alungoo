@@ -43,7 +43,7 @@ const DeliveryModal = ({
     setLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`${localUrl}/food-order/${orderId}/status`, {
+      const res = await fetch(`${renderUrl}/food-order/${orderId}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

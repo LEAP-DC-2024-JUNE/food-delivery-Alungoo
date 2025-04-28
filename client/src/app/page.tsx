@@ -1,22 +1,17 @@
 "use client";
 import hero2 from "../Images/hero2.png";
 import Footer from "@/components/Footer";
-
 import Header from "@/components/Header";
 import Image from "next/image";
 import FoodContainer from "@/components/FoodContainer";
-import React from "react";
+import React, { useEffect } from "react";
 import { CarouselBadges } from "@/components/Carousel";
-import useSWR from "swr";
-import { fetchFoodData } from "@/utils/fetchFoodData";
+import { useState } from "react";
 
 const Home = () => {
-  const {
-    data: groupedFood,
-    error,
-    isLoading,
-  } = useSWR("food-group", fetchFoodData);
-  console.log(groupedFood, "groupedFood");
+  const [selectedBadge, setSelectedBadge] = useState<string>("");
+  useEffect(() => {}, [selectedBadge]);
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -32,11 +27,14 @@ const Home = () => {
         <div className="w-full max-w-7xl mx-auto lg:w-[1264px]">
           <div className="flex flex-col items-center">
             <div className="w-full">
-              <CarouselBadges />
+              <CarouselBadges
+                selectedBadge={selectedBadge}
+                setSelectedBadge={setSelectedBadge}
+              />
             </div>
           </div>
           <div className="mt-14">
-            <FoodContainer />
+            <FoodContainer selectedBadge={selectedBadge} />
           </div>
         </div>
       </div>

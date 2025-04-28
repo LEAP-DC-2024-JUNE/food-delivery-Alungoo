@@ -79,7 +79,6 @@ export const loginUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
-
     res.status(200).json({
       status: "success",
       message: "User login successful",
@@ -93,6 +92,7 @@ export const loginUser = async (req, res) => {
     });
   }
 };
+console.log(process.env.JWT_SECRET);
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;

@@ -9,6 +9,7 @@ import { authRouter } from "./router/auth.router.js";
 
 const server = express();
 const PORT = process.env.PORT || 4000;
+console.log(PORT);
 
 connectDB();
 server.use(express.json());

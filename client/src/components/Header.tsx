@@ -76,7 +76,7 @@ const Header = () => {
               <TooltipContent className="bg-[#FFFFFF] rounded-3xl text-black">
                 <div className="flex flex-col justify-center items-center gap-4 p-4 rounded-[12px]">
                   <strong className="text-[16px]">
-                    {userEmail || "Guest"}
+                    {userEmail || "Please login"}
                   </strong>
                   {userEmail ? (
                     <Link href="/login">

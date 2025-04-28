@@ -48,7 +48,7 @@ const FoodByCategory: React.FC<FoodByCategoryProps> = ({
     const token = localStorage.getItem("token");
     try {
       const imageUrl = await uploadImageToCloudinary(foodInput.image as File);
-      await fetch(`${localUrl}/foods`, {
+      await fetch(`${renderUrl}/foods`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

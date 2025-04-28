@@ -11,7 +11,6 @@ export const connectDB = async () => {
       console.error("MONGO_URL is undefined!");
       process.exit(1);
     }
-
     await mongoose.connect(MONGO_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -22,6 +21,7 @@ export const connectDB = async () => {
     process.exit(1);
   }
 };
+console.log(MONGO_URL);
 
 // const client = new MongoClient(
 //   "mongodb+srv://duluuf:LM7miFmm6q0eg0Qa@cluster1.pyncrqd.mongodb.net/"
