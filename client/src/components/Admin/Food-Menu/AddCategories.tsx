@@ -16,7 +16,7 @@ import FoodByCategory from "@/components/Admin/Food-Menu/AllfoodBycategory";
 import { AvatarPic } from "../Common/Avatar";
 import AddButtonFoodMenu from "@/svg/AddButtonFoodMenu";
 
-import { localUrl, renderUrl } from "@/utils/render";
+import { renderUrl } from "@/utils/render";
 
 export default function AddCategories() {
   const [token, setToken] = useState<string | null>(null);

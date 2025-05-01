@@ -1,4 +1,5 @@
 import axios from "axios";
+import { renderUrl } from "./render";
 
 export const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
@@ -10,7 +11,7 @@ export const getAuthHeaders = () => {
 };
 export const fetchFoodData = async (url: any) => {
   try {
-    const res = await axios.get(`http://localhost:4000/${url}`);
+    const res = await axios.get(`${renderUrl}/${url}`);
 
     const food = res.data;
     console.log(food);
@@ -22,7 +23,7 @@ export const fetchFoodData = async (url: any) => {
 };
 export const fetchFoodCategory = async (url: any) => {
   try {
-    const res = await axios.get(`http://localhost:4000/${url}`);
+    const res = await axios.get(`${renderUrl}/${url}`);
 
     const food = res.data;
     console.log(food);
