@@ -4,6 +4,7 @@ import {
   getAllFoodOrders,
   updateFoodOrder,
   getFoodOrderByUserId,
+  bulkUpdateFoodOrders,
 } from "../controllers/food-orderController.js";
 import { authorization } from "../middleware/authorization.js";
 import { authentication } from "../middleware/authentication.js";
@@ -17,3 +18,4 @@ foodOrderRouter.post("/", createFoodOrder);
 foodOrderRouter
   .route("/:orderId/status")
   .patch(authentication, authorization("ADMIN"), updateFoodOrder);
+foodOrderRouter.patch("/bulk-update", bulkUpdateFoodOrders);

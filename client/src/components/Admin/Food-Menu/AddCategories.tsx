@@ -15,16 +15,19 @@ import { Label } from "@/components/ui/label";
 import FoodByCategory from "@/components/Admin/Food-Menu/AllfoodBycategory";
 import { AvatarPic } from "../Common/Avatar";
 import AddButtonFoodMenu from "@/svg/AddButtonFoodMenu";
-
+import { Loader2 } from "lucide-react";
 import { renderUrl } from "@/utils/render";
+import Link from "next/link";
 
 export default function AddCategories() {
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [groupedFood, setGroupedFood] = useState<any[]>([]);
   const [categoryName, setCategoryName] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -46,6 +49,7 @@ export default function AddCategories() {
         headers,
       });
       const data = await res.json();
+      console.log("Fetched food group data:", data);
       setCategories(data);
       const foodCounts = data.map((group: any) => ({
         categoryName: group?.categoryName,
@@ -89,16 +93,41 @@ export default function AddCategories() {
   };
 
   useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
     if (token) {
       fetchGroupedFood();
     }
   }, [token]);
-
-  if (!categories.length) return <div>Only for admin use!</div>;
+  if (loading) {
+    return (
+      <div className=" flex h-screen items-center justify-center">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col items-center absolute">
       <div className="flex justify-end max-w-[1171px] w-full my-2">
-        <AvatarPic />
+        <div
+          className="relative cursor-pointer hover:opacity-90"
+          onClick={() => setIsTooltipOpen(!isTooltipOpen)}
+        >
+          <AvatarPic />
+
+          {isTooltipOpen && (
+            <div className="absolute right-0 top-12 bg-white border border-gray-300 shadow-lg rounded-md p-2 z-10">
+              <Link
+                href="/login"
+                className="bg-zinc-300 rounded-full text-black px-4 py-2 text-[12px]"
+              >
+                log out
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
       <div className="bg-white rounded-xl max-w-[1171px] p-6 shadow-md">
         <div>

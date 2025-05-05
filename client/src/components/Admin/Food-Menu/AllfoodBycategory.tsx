@@ -3,7 +3,7 @@ import { uploadImageToCloudinary } from "@/utils/uploadImageToCloudinary";
 import { useState, useEffect } from "react";
 import AddFoodDialog from "./AddFoodDialog";
 import FoodCardAdmin from "./FoodCardAdmin";
-import { localUrl, renderUrl } from "@/utils/render";
+import { renderUrl } from "@/utils/render";
 interface FoodByCategoryProps {
   categories: any[];
   groupedFood: () => void;
@@ -62,7 +62,7 @@ const FoodByCategory: React.FC<FoodByCategoryProps> = ({
       console.log(err);
     }
   };
-  console.log(categories, "categoriessss all");
+  console.log(reorderedCategories, "categoriessss");
   return (
     <div className="rounded-lg bg-[#F4F4F5]">
       {reorderedCategories?.map((foodData: any, index: number) => (

@@ -7,11 +7,25 @@ import FoodContainer from "@/components/FoodContainer";
 import React, { useEffect } from "react";
 import { CarouselBadges } from "@/components/Carousel";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const Home = () => {
   const [selectedBadge, setSelectedBadge] = useState<string>("");
-  useEffect(() => {}, [selectedBadge]);
+  const [loading, setLoading] = useState<boolean>(false);
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
 
+  if (loading) {
+    return (
+      <div className=" flex h-screen items-center justify-center">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col min-h-screen">
       <Header />

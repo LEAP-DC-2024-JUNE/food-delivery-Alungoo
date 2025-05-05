@@ -87,3 +87,36 @@ export const updateFoodOrder = async (req, res) => {
     res.status(500).json({ error: "Something went wrong!" });
   }
 };
+export const bulkUpdateFoodOrders = async (req, res) => {
+  const updates = req.body;
+  const validStatuses = ["PENDING", "CANCELLED", "DELIVERED"];
+
+  if (!Array.isArray(updates) || updates.length === 0) {
+    return res.status(400).json({ error: "Please send at least one update" });
+  }
+
+  try {
+    const operations = updates.map(({ orderId, status }) => {
+      if (!orderId || !validStatuses.includes(status)) {
+        throw new Error("Invalid orderId or status");
+      }
+
+      return {
+        updateOne: {
+          filter: { _id: orderId },
+          update: { $set: { status } },
+        },
+      };
+    });
+
+    const result = await FoodOrderModel.bulkWrite(operations);
+    res.status(200).json({ message: "Orders updated", result });
+  } catch (err) {
+    console.error("Bulk update error:", err.message);
+
+    const statusCode = err.message === "Invalid orderId or status" ? 400 : 500;
+    const errorMsg = statusCode === 400 ? err.message : "Something went wrong!";
+
+    res.status(statusCode).json({ error: errorMsg });
+  }
+};

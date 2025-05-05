@@ -12,6 +12,11 @@ body {
   padding: 0;
   background-color: #f4f4f5;
 }
+@layer utilities {
+  [data-state="checked"] [data-select-item-indicator] {
+    display: none;
+  }
+}
 
 @layer base {
   :root {
