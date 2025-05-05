@@ -10,21 +10,16 @@ type cardPropsType = {
 };
 
 const FoodCardAdmin = ({ data, onUpdateFood }: cardPropsType) => {
-  // Use local state to track the current food data
   const [foodData, setFoodData] = useState<FoodType>(data);
 
-  // This function will be called by the EditFoodDialog when food is updated
   const updateFoodInParent = (updatedFood: FoodType) => {
-    // Update local state
     setFoodData(updatedFood);
 
-    // Notify parent component if needed
     if (onUpdateFood) {
       onUpdateFood(updatedFood);
     }
   };
 
-  // Use foodData (local state) instead of data (props) to display the component
   return (
     <Card className="w-[270.75px] bg-white rounded-[20px] p-[16px] flex flex-col gap-3 shadow-none">
       <CardHeader className="w-full flex justify-center p-0">

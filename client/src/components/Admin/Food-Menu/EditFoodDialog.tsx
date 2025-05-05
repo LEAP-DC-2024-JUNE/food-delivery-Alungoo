@@ -56,7 +56,6 @@ export function EditFoodDialog({
     image: selectedFood.image,
   });
 
-  // Fetch categories on mount
   useEffect(() => {
     async function fetchCategories() {
       try {
@@ -71,7 +70,6 @@ export function EditFoodDialog({
     fetchCategories();
   }, []);
 
-  // Sync selectedFood to editFoodData whenever it changes
   useEffect(() => {
     setEditFoodData({
       foodName: selectedFood.foodName,
@@ -105,10 +103,8 @@ export function EditFoodDialog({
     try {
       const updatedFood = { ...selectedFood, ...editFoodData };
 
-      // Step 1: Optimistic UI update - immediately update the parent
       updateFoodInParent(updatedFood);
 
-      // Step 2: Update the food on the server
       const res = await fetch(`${renderUrl}/foods/${selectedFood._id}`, {
         method: "PATCH",
         headers: {
@@ -123,10 +119,8 @@ export function EditFoodDialog({
 
       const updatedDataFromServer = await res.json();
 
-      // Step 3: Show success toast after server update
       toast.success("The dish has been updated successfully");
 
-      // Close the dialog after successful update
       setOpen(false);
     } catch (err) {
       console.error("Error updating food:", err);
@@ -149,7 +143,6 @@ export function EditFoodDialog({
           <DialogDescription />
         </DialogHeader>
         <div className="space-y-4">
-          {/* Dish Name */}
           <div className="flex items-start justify-between">
             <Label htmlFor="name" className="text-[#71717A] text-[12px]">
               Dish name
@@ -164,14 +157,12 @@ export function EditFoodDialog({
             />
           </div>
 
-          {/* Dish Category */}
           <div className="flex items-start justify-between">
             <Label className="text-[#71717A] text-[12px]">Dish category</Label>
             <div className="w-[288px]">
               <Select
                 value={categoryId}
                 onValueChange={(value) => {
-                  // Update the category state in real-time
                   setCategoryId(value);
                   setEditFoodData((prev) => ({ ...prev, category: value }));
                 }}
@@ -192,7 +183,6 @@ export function EditFoodDialog({
             </div>
           </div>
 
-          {/* Ingredients */}
           <div className="flex items-start justify-between">
             <Label htmlFor="ingredients" className="text-[#71717A] text-[12px]">
               Ingredients
@@ -206,7 +196,6 @@ export function EditFoodDialog({
             />
           </div>
 
-          {/* Price */}
           <div className="flex items-start justify-between">
             <Label htmlFor="price" className="text-[#71717A] text-[12px]">
               Price
@@ -221,7 +210,6 @@ export function EditFoodDialog({
             />
           </div>
 
-          {/* Image Upload */}
           <div className="flex items-center justify-between gap-4">
             <Label
               htmlFor="file_input"
